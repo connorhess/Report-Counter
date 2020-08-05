@@ -1,6 +1,7 @@
 # Report-Counter
 
 Numpad 9 = +1
+
 Numpad 6 = -1
 
 Run the dependencys.bat to install it.
