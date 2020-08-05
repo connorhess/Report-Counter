@@ -6,7 +6,9 @@ echo remember to tick th "add pip to path"
 echo press enter to start
 set /p DUMMY=Hit ENTER to continue...
 
-python-3.7.0-amd64.exe
+START python-3.7.0-amd64.exe
+
+setx PATH “%PATH%;C:\Python37\Scripts”
 
 echo updating "pip"
 pip install --upgrade pip
@@ -29,6 +31,7 @@ echo
 echo Installing "pynput" for Keybind
 echo https://pypi.org/project/pynput/
 pip install pynput
+
 
 echo done
 echo
