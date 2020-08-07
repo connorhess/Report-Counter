@@ -8,6 +8,7 @@ import threading
 import time
 from tkinter.font import Font
 from functools import partial
+from tkinter import ttk
 
 conn = sqlite3.connect('Report_Counter.db', check_same_thread=False)
 c = conn.cursor()
@@ -15,9 +16,13 @@ c = conn.cursor()
 c.execute('''CREATE TABLE IF NOT EXISTS Stats(ID INT, Name TEXT, Detail RAEL)''')
 c.execute('''CREATE TABLE IF NOT EXISTS Commands(ID INT, Name TEXT, Detail RAEL)''')
 
+
 c.execute("SELECT COUNT(ID) FROM Stats")
 if (c.fetchall()[0][0]) == 0:
     c.execute('''INSERT INTO Stats(ID, Name, Detail) VALUES(?, ? ,?)''',(1, 'Report Count', 0))
+    c.execute('''INSERT INTO Stats(ID, Name, Detail) VALUES(?, ? ,?)''',(2, '+1 KeyBind', 105))
+    c.execute('''INSERT INTO Stats(ID, Name, Detail) VALUES(?, ? ,?)''',(3, '-1 KeyBind', 102))
+    conn.commit()
 else:
     print("No setup had to be done")
 
@@ -25,7 +30,12 @@ global Count
 
 c.execute("SELECT Detail FROM Stats WHERE ID=1")
 Count = (c.fetchall()[0][0])
+
+
+
 STOP = 0
+
+
 def Run():
     def Main():
         Page1 = Tk()
@@ -36,6 +46,62 @@ def Run():
         # Page1.attributes("-topmost", True)
 
         myFont = Font(family="Times New Roman", size=20)
+
+        def Edit_KeyBind():
+            Page2 = Toplevel()
+            Page2.title("Elite Sit Counter")
+            Page2.configure(background="#BEBEBE")
+            Page2.geometry("+250+250")
+            Page2.transient([Page1])
+
+            Keys = {"a": "65", "b": "66", "c": "67", "d": "68", "e": "69", "f": "70", "g": "71", "h": "72", "i": "73", "j": "74", "k": "75", "l": "76", "m": "77", "n": "78", "o": "79", "p": "80", "q": "81", "r": "82", "s": "83", "t": "84", "u": "85", "v": "86", "w": "87", "x": "88", "y": "89", "z": "90", "f1": "112", "f2": "113", "f3": "114", "f4": "115", "f5": "116", "f6": "117", "f7": "118", "f8": "119", "f9": "120", "f10": "121", "f11": "122", "f12": "123", "-": "189", "=": "187", "1": "49", "2": "50", "3": "51", "4": "52", "5": "53", "6": "44", "7": "45", "8": "46", "9": "47", "0": "48", "kp_end": "97", "kp_downarrow": "98", "kp_pgdn": "99", "kp_leftarrow": "100", "kp_5": "101", "kp_rightarrow": "102", "kp_home": "103", "kp_uparrow": "104", "kp_pgup": "105"}
+
+            key_list = list(Keys.keys())
+            val_list = list(Keys.values())
+
+            Label(Page2, text="KeyBind +1", bd=2).grid(row=0,column=0,pady=2,sticky='e')
+            combo1 = ttk.Combobox(Page2, values=['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10', 'f11', 'f12', '-', '=', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'kp_end', 'kp_downarrow', 'kp_pgdn', 'kp_leftarrow', 'kp_5', 'kp_rightarrow', 'kp_home', 'kp_uparrow', 'kp_pgup'])
+            combo1.grid(column=1, row=0)
+
+            Label(Page2, text="KeyBind -1", bd=2).grid(row=1,column=0,pady=2,sticky='e')
+            combo2 = ttk.Combobox(Page2, values=['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10', 'f11', 'f12', '-', '=', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'kp_end', 'kp_downarrow', 'kp_pgdn', 'kp_leftarrow', 'kp_5', 'kp_rightarrow', 'kp_home', 'kp_uparrow', 'kp_pgup'])
+            combo2.grid(column=1, row=1)
+
+            c.execute("SELECT Detail FROM Stats WHERE ID=2")
+            Val1 = (str(c.fetchall()[0][0]))
+            Val11 = (list(Keys).index(str(key_list[val_list.index(Val1)])))
+
+            c.execute("SELECT Detail FROM Stats WHERE ID=3")
+            Val2 = (str(c.fetchall()[0][0]))
+            Val21 = (list(Keys).index(str(key_list[val_list.index(Val2)])))
+
+            combo1.current(Val11)
+            combo2.current(Val21)
+
+            def Update():
+                Num1 = Keys[(combo1.get())]
+                c.execute("UPDATE Stats SET Detail=? WHERE ID=2",(Num1,))
+                Num2 = Keys[(combo2.get())]
+                c.execute("UPDATE Stats SET Detail=? WHERE ID=3",(Num2,))
+                conn.commit()
+                Page2.destroy()
+                Page1.destroy()
+                Run()
+
+            B01 = Button(Page2, text="Done", font=myFont, fg="Black", bg="Green", command=Update, bd=2)
+            B01.grid(row=2,column=1)
+
+        menubar = Menu(Page1)
+
+        filemenu = Menu(menubar, tearoff=0)
+        filemenu.add_command(label="Edit KeyBinds", command=Edit_KeyBind)
+        menubar.add_cascade(label="File", menu=filemenu)
+
+        filemenu.add_separator()
+
+        Page1.config(menu=menubar)
+
+
 
         def Close():
             STOP = 1
@@ -254,9 +320,13 @@ def Run():
 
     # Create a mapping of keys to function (use frozenset as sets/lists are not hashable - so they can't be used as keys)
     # Note the missing `()` after function_1 and function_2 as want to pass the function, not the return value of the function
+    c.execute("SELECT Detail FROM Stats WHERE ID=2")
+    Keybind1 = (c.fetchall()[0][0])
+    c.execute("SELECT Detail FROM Stats WHERE ID=3")
+    Keybind2 = (c.fetchall()[0][0])
     combination_to_function = {
-        frozenset([KeyCode(vk=105)]): Add_count,  # Add 1
-        frozenset([KeyCode(vk=102)]): Remove_count,  # Remove 1
+        frozenset([KeyCode(vk=Keybind1)]): Add_count,  # Add 1
+        frozenset([KeyCode(vk=Keybind2)]): Remove_count,  # Remove 1
     }
 
 
