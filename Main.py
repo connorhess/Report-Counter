@@ -54,7 +54,7 @@ def Main():
         Message = response.text
         Message_var.set(Message)
     except:
-        Message_var.set("Offline")
+        Message_var.set("Offline/No Message")
 
 
     B0 = Button(Page1, text="Exit", font=myFont, width=29, height=1, fg="Black", bg="Red", command=Close, bd=2)
