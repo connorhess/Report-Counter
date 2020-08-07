@@ -63,7 +63,7 @@ def Main():
 
     frame_width = 445
     frame_height1 = 100
-    frame_height2 = 190
+    frame_height2 = 260
 
     F1 = Frame(Page1, height=frame_height1, width=frame_width, bg="#E9E9E9", relief="raise")
     F1.grid(row=2,column=0)
@@ -125,6 +125,8 @@ def Main():
     FG = "black"
     FG2 = "Black"
     BG2 = "White"
+    FG3 = "Red"
+    BG3 = "Grey"
 
     B3 = Button(F2, text="Ban Appeal", font=myFont2, width=width2, height=1, fg=FG, bg=BG, command=partial(WB_open,"https://elitelupus.com/forums/forumdisplay.php?fid=15"), bd=2)
     B3.grid(row=0,column=0)
@@ -159,6 +161,31 @@ def Main():
 
     B12 = Button(F2, text="Info", font=myFont2, width=width2, height=1, fg=FG2, bg=BG2, command=partial(WB_open,"https://www.node-s.co.za/products/report-counter"), bd=2)
     B12.grid(row=3,column=2)
+
+
+    B13 = Button(F2, text="Join Server 1", font=myFont2, width=width2, height=1, fg=FG3, bg=BG3, command=partial(WB_open,"steam://connect/54.37.246.36:27015"), bd=2)
+    B13.grid(row=4,column=0)
+
+    B14 = Button(F2, text="Join Server 2", font=myFont2, width=width2, height=1, fg=FG3, bg=BG3, command=partial(WB_open,"steam://connect/54.37.246.36:27016"), bd=2)
+    B14.grid(row=4,column=1)
+
+    B15 = Button(F2, text="Join Server 3", font=myFont2, width=width2, height=1, fg=FG3, bg=BG3, command=partial(WB_open,"steam://connect/54.37.246.36:27017"), bd=2)
+    B15.grid(row=4,column=2)
+
+
+    B16 = Button(F2, text="Join Server 4", font=myFont2, width=width2, height=1, fg=FG3, bg=BG3, command=partial(WB_open,"steam://connect/gmod-drp1-usa.elitelupus.com:27015"), bd=2)
+    B16.grid(row=5,column=0)
+
+    B17 = Button(F2, text="Join Server 5", font=myFont2, width=width2, height=1, fg=FG3, bg=BG3, command=partial(WB_open,"steam://connect/gmod-drp2-usa.elitelupus.com:27015"), bd=2)
+    B17.grid(row=5,column=1)
+
+    B18 = Button(F2, text="Join Server 6", font=myFont2, width=width2, height=1, fg=FG3, bg=BG3, command=partial(WB_open,"steam://connect/gmod-drp3-usa.elitelupus.com:27015"), bd=2)
+    B18.grid(row=5,column=2)
+
+
+    B19 = Button(F2, text="Join Server 7", font=myFont2, width=width2, height=1, fg=FG3, bg=BG3, command=partial(WB_open,"steam://connect/139.99.233.75:27015"), bd=2)
+    B19.grid(row=6,column=0)
+
 
 
     # B13 = Button(F2, text="Donate", font=myFont2, width=width2, height=1, fg=FG2, bg=BG2, command=partial(WB_open,"https://pay.yoco.com/node-s?reference=Donate"), bd=2)
