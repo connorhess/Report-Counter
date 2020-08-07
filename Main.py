@@ -146,8 +146,8 @@ def Main():
     B12.grid(row=3,column=2)
 
 
-    B13 = Button(F2, text="Donate", font=myFont2, width=width2, height=1, fg=FG2, bg=BG2, command=partial(WB_open,"https://pay.yoco.com/node-s?reference=Donate"), bd=2)
-    B13.grid(row=4,column=0)
+    # B13 = Button(F2, text="Donate", font=myFont2, width=width2, height=1, fg=FG2, bg=BG2, command=partial(WB_open,"https://pay.yoco.com/node-s?reference=Donate"), bd=2)
+    # B13.grid(row=4,column=0)
 
 
     def Animate():
