@@ -44,8 +44,21 @@ def Main():
         # thread.exit()
         # listener.exit()
 
+    Message_var = StringVar()
+    label0 = Label(Page1, textvariable=Message_var, width=29)
+    label0.grid(row=0,column=0)
+    label0.configure(font=myFont)
+
+    try:
+        response = requests.get('https://raw.githubusercontent.com/connorhess/Report-Counter/master/Message.txt')
+        Message = response.text
+        Message_var.set(Message)
+    except:
+        Message_var.set("Offline")
+
+
     B0 = Button(Page1, text="Exit", font=myFont, width=29, height=1, fg="Black", bg="Red", command=Close, bd=2)
-    B0.grid(row=0,column=0)
+    B0.grid(row=1,column=0)
 
 
     frame_width = 445
@@ -53,7 +66,7 @@ def Main():
     frame_height2 = 190
 
     F1 = Frame(Page1, height=frame_height1, width=frame_width, bg="#E9E9E9", relief="raise")
-    F1.grid(row=1,column=0)
+    F1.grid(row=2,column=0)
     F1.grid_propagate(0)
 
 
@@ -103,7 +116,7 @@ def Main():
 
 
     F2 = Frame(Page1, height=frame_height2, width=frame_width, bg="#E9E9E9", relief="raise")
-    F2.grid(row=2,column=0)
+    F2.grid(row=3,column=0)
     F2.grid_propagate(0)
 
     myFont2 = Font(family="Times New Roman", size=14)
@@ -135,6 +148,8 @@ def Main():
 
     B9 = Button(F2, text="Staff Reports", font=myFont2, width=width2, height=1, fg=FG, bg=BG, command=partial(WB_open,"https://elitelupus.com/forums/forumdisplay.php?fid=17"), bd=2)
     B9.grid(row=2,column=0)
+
+
 
     B10 = Button(F2, text="Report Issue", font=myFont2, width=width2, height=1, fg=FG2, bg=BG2, command=partial(WB_open,"https://github.com/connorhess/Report-Counter/issues/new?labels=bug"), bd=2)
     B10.grid(row=3,column=0)
