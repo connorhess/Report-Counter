@@ -17,12 +17,36 @@ c.execute('''CREATE TABLE IF NOT EXISTS Stats(ID INT, Name TEXT, Detail RAEL)'''
 c.execute('''CREATE TABLE IF NOT EXISTS Commands(ID INT, Name TEXT, Detail RAEL)''')
 
 
-c.execute("SELECT COUNT(ID) FROM Stats")
+# c.execute("SELECT COUNT(ID) FROM Stats WHERE ID=1")
+# if (c.fetchall()[0][0]) == 0:
+#     c.execute('''INSERT INTO Stats(ID, Name, Detail) VALUES(?, ? ,?)''',(1, 'Report Count', 0))
+#     c.execute('''INSERT INTO Stats(ID, Name, Detail) VALUES(?, ? ,?)''',(2, '+1 KeyBind', 105))
+#     c.execute('''INSERT INTO Stats(ID, Name, Detail) VALUES(?, ? ,?)''',(3, '-1 KeyBind', 102))
+#     conn.commit()
+# else:
+#     print("No setup had to be done")
+
+c.execute("SELECT COUNT(ID) FROM Stats WHERE ID=1")
 if (c.fetchall()[0][0]) == 0:
     c.execute('''INSERT INTO Stats(ID, Name, Detail) VALUES(?, ? ,?)''',(1, 'Report Count', 0))
+    conn.commit()
+    print("added Report Count")
+else:
+    print("No setup had to be done")
+
+c.execute("SELECT COUNT(ID) FROM Stats WHERE ID=2")
+if (c.fetchall()[0][0]) == 0:
     c.execute('''INSERT INTO Stats(ID, Name, Detail) VALUES(?, ? ,?)''',(2, '+1 KeyBind', 105))
+    conn.commit()
+    print("added +1 KeyBind")
+else:
+    print("No setup had to be done")
+
+c.execute("SELECT COUNT(ID) FROM Stats WHERE ID=3")
+if (c.fetchall()[0][0]) == 0:
     c.execute('''INSERT INTO Stats(ID, Name, Detail) VALUES(?, ? ,?)''',(3, '-1 KeyBind', 102))
     conn.commit()
+    print("added -1 KeyBind")
 else:
     print("No setup had to be done")
 
@@ -39,7 +63,7 @@ STOP = 0
 def Run():
     def Main():
         Page1 = Tk()
-        Page1.title("Elite Sit Counter")
+        Page1.title("Report Counter")
         Page1.configure(background="#BEBEBE")
         Page1.geometry("+200+200")
         # Page1.attributes("-fullscreen", True)
@@ -49,7 +73,7 @@ def Run():
 
         def Edit_KeyBind():
             Page2 = Toplevel()
-            Page2.title("Elite Sit Counter")
+            Page2.title("Report Counter Keybind Editor")
             Page2.configure(background="#BEBEBE")
             Page2.geometry("+250+250")
             Page2.transient([Page1])
