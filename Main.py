@@ -2,9 +2,6 @@ from tkinter import messagebox
 import sqlite3
 from tkinter import *
 from tkinter import filedialog
-from cefpython3 import cefpython as cef
-import platform
-import sys
 import webbrowser
 from pynput.keyboard import Key, KeyCode, Listener
 import threading
@@ -18,6 +15,17 @@ c = conn.cursor()
 c.execute('''CREATE TABLE IF NOT EXISTS Stats(ID INT, Name TEXT, Detail RAEL)''')
 c.execute('''CREATE TABLE IF NOT EXISTS Commands(ID INT, Name TEXT, Detail RAEL)''')
 
+c.execute("SELECT COUNT(ID) FROM Stats")
+if (c.fetchall()[0][0]) == 0:
+    c.execute('''INSERT INTO Stats(ID, Name, Detail) VALUES(?, ? ,?)''',(1, 'Report Count', 0))
+else:
+    print("No setup had to be done")
+
+global Count
+
+c.execute("SELECT Detail FROM Stats WHERE ID=1")
+Count = (c.fetchall()[0][0])
+STOP = 0
 
 def Main():
     Page1 = Tk()
@@ -27,15 +35,27 @@ def Main():
     # Page1.attributes("-fullscreen", True)
     # Page1.attributes("-topmost", True)
 
+    myFont = Font(family="Times New Roman", size=20)
+
+    def Close():
+        STOP = 1
+        Page1.destroy()
+        conn.close()
+        # thread.exit()
+        # listener.exit()
+
+    B0 = Button(Page1, text="Exit", font=myFont, width=29, height=1, fg="Black", bg="Red", command=Close, bd=2)
+    B0.grid(row=0,column=0)
+
+
     frame_width = 445
     frame_height1 = 100
-    frame_height2 = 120
+    frame_height2 = 190
 
     F1 = Frame(Page1, height=frame_height1, width=frame_width, bg="#E9E9E9", relief="raise")
-    F1.grid(row=0,column=0)
+    F1.grid(row=1,column=0)
     F1.grid_propagate(0)
 
-    myFont = Font(family="Times New Roman", size=20)
 
     label1 = Label(F1, text='Total Sits: ', anchor='e', pady=4)
     label1.grid(row=0,column=0,sticky='e', pady=(0, 5))
@@ -61,18 +81,10 @@ def Main():
     Sits_from_80.set((80-int(count)))
 
     def update():
-        c.execute("SELECT Detail FROM Stats")
-        count = (c.fetchall()[0][0])
-        print(count)
-        Stats.set(count)
-
-    def Ban_Search():
-        # Page1.iconify()
-        sys.excepthook = cef.ExceptHook  # To shutdown all CEF processes on error
-        cef.Initialize()
-        cef.CreateBrowserSync(url="https://elitelupus.com/bans/search/", window_title="Ban Search")
-        cef.MessageLoop()
-        cef.Shutdown()
+        # c.execute("SELECT Detail FROM Stats")
+        # count = (c.fetchall()[0][0])
+        print(Count)
+        Stats.set(Count)
 
     def Web_browser_forums():
         new = 2
@@ -82,15 +94,7 @@ def Main():
         new = 2
         webbrowser.open(Url,new=new)
 
-    def Web_Page(Url,Title):
-        # Page.iconify()
-        sys.excepthook = cef.ExceptHook  # To shutdown all CEF processes on error
-        cef.Initialize()
-        cef.CreateBrowserSync(url=Url, window_title=Title)
-        cef.MessageLoop()
-        cef.Shutdown()
-
-    B1 = Button(F1, text="Search Ban", font=myFont, width=12, height=1, fg="white", bg="green", command=Ban_Search, bd=2)
+    B1 = Button(F1, text="Search Ban", font=myFont, width=12, height=1, fg="white", bg="green", command=partial(WB_open,"https://elitelupus.com/bans/search/"), bd=2)
     B1.grid(row=0,column=3)
 
     B2 = Button(F1, text="Forums", font=myFont, width=12, height=1, fg="white", bg="green", command=Web_browser_forums, bd=2)
@@ -99,13 +103,15 @@ def Main():
 
 
     F2 = Frame(Page1, height=frame_height2, width=frame_width, bg="#E9E9E9", relief="raise")
-    F2.grid(row=1,column=0)
+    F2.grid(row=2,column=0)
     F2.grid_propagate(0)
 
     myFont2 = Font(family="Times New Roman", size=14)
     width2 = 14
     BG = "light green"
     FG = "black"
+    FG2 = "Black"
+    BG2 = "White"
 
     B3 = Button(F2, text="Ban Appeal", font=myFont2, width=width2, height=1, fg=FG, bg=BG, command=partial(WB_open,"https://elitelupus.com/forums/forumdisplay.php?fid=15"), bd=2)
     B3.grid(row=0,column=0)
@@ -130,14 +136,29 @@ def Main():
     B9 = Button(F2, text="Staff Reports", font=myFont2, width=width2, height=1, fg=FG, bg=BG, command=partial(WB_open,"https://elitelupus.com/forums/forumdisplay.php?fid=17"), bd=2)
     B9.grid(row=2,column=0)
 
+    B10 = Button(F2, text="Report Issue", font=myFont2, width=width2, height=1, fg=FG2, bg=BG2, command=partial(WB_open,"https://github.com/connorhess/Report-Counter/issues/new?labels=bug"), bd=2)
+    B10.grid(row=3,column=0)
+
+    B11 = Button(F2, text="New Suggestion", font=myFont2, width=width2, height=1, fg=FG2, bg=BG2, command=partial(WB_open,"https://github.com/connorhess/Report-Counter/issues/new?labels=enhancement"), bd=2)
+    B11.grid(row=3,column=1)
+
+    B12 = Button(F2, text="Info", font=myFont2, width=width2, height=1, fg=FG2, bg=BG2, command=partial(WB_open,"https://www.node-s.co.za/products/report-counter"), bd=2)
+    B12.grid(row=3,column=2)
+
+
+    B13 = Button(F2, text="Donate", font=myFont2, width=width2, height=1, fg=FG2, bg=BG2, command=partial(WB_open,"https://pay.yoco.com/node-s?reference=Donate"), bd=2)
+    B13.grid(row=4,column=0)
+
 
     def Animate():
         while True:
-            time.sleep(1)
-            c.execute("SELECT Detail FROM Stats")
-            count = (c.fetchall()[0][0])
-            Sits_from_80.set((80-int(count)))
-            Stats.set(count)
+            if STOP == 1:
+                thread.exit()
+            time.sleep(0.2)
+            # c.execute("SELECT Detail FROM Stats")
+            # count = (c.fetchall()[0][0])
+            Sits_from_80.set((80-int(Count)))
+            Stats.set(Count)
 
     thread = threading.Thread(target=Animate)
     thread.setDaemon(True)
@@ -151,25 +172,35 @@ thread.setDaemon(True)
 thread.start()
 
 def Add_count():
-    c.execute("SELECT Detail FROM Stats")
+    c.execute("SELECT Detail FROM Stats WHERE ID=1")
     Current = (c.fetchall()[0][0])
+
+    global Count
+    Count = Current
 
     if Current >= 0:
         New = Current + 1
     else:
         New = 1
 
+    Count += 1
+
     c.execute("UPDATE Stats SET Detail=? WHERE ID=1",(New,))
     conn.commit()
 
 def Remove_count():
-    c.execute("SELECT Detail FROM Stats")
+    c.execute("SELECT Detail FROM Stats WHERE ID=1")
     Current = (c.fetchall()[0][0])
+
+    global Count
+    Count = Current
 
     if Current >= 0:
         New = Current - 1
     else:
         New = 0
+
+    Count -= 1
 
     c.execute("UPDATE Stats SET Detail=? WHERE ID=1",(New,))
     conn.commit()
